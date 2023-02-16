@@ -1,5 +1,7 @@
 package com.example.springtaskmgrv2.controllers;
 
+import com.example.springtaskmgrv2.dto.NoteRequestDto;
+import com.example.springtaskmgrv2.dto.NotesDto;
 import com.example.springtaskmgrv2.entities.NoteEntity;
 import com.example.springtaskmgrv2.entities.TaskEntity;
 import com.example.springtaskmgrv2.services.TasksService;
@@ -64,14 +66,14 @@ public class TasksController {
     }
 
     @GetMapping("/{id}/notes")
-    public List<NoteEntity> getNotes(@PathVariable Integer id) {
+    public List<NotesDto> getNotes(@PathVariable Integer id) {
         return tasksService.getNotesId(id);
     }
 
     @PostMapping("/{id}/notes")
-    public Optional<NoteEntity> addNotes(@RequestBody NoteEntity noteEntity, @PathVariable Integer id) {
+    public Optional<NoteEntity> addNotes(@RequestBody NoteRequestDto noteRequestDto, @PathVariable Integer id) {
        // TaskEntity taskEntity =
-      return  tasksService.addNotes(noteEntity,id);
+      return  tasksService.addNotes(noteRequestDto,id);
         //return noteEntity.getId();
     }
 

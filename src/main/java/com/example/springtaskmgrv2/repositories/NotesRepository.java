@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.transaction.Transactional;
@@ -15,18 +17,27 @@ import java.util.List;
 public interface NotesRepository extends JpaRepository<NoteEntity, Integer> {
 
 
-    @Query(" FROM notes n where n.task.id = :id")
-    List<NoteEntity> findbyTid(@Param("id") Integer id);
+//    @Query(" FROM notes n where n.task.id = :id")
+//    List<NoteEntity> findbyTid(@Param("id") Integer id);
+
+//    @Transactional
+//    @Modifying
+//    @Query("Update notes n set n.task.id =?1 where n.id= ?2")
+//    void updateFkey(@Param("id") Integer id, @Param("key") Integer key);
+
+
+
+    List<NoteEntity> findAllByTaskId(Integer id);
+
+
+
+    //    void deleteByField1andField2(String field1, String field2);
+  //  void deletebByidandtask_id(Integer nodeid, Integer id);
 
     @Transactional
     @Modifying
-    @Query("Update notes n set n.task.id =?1 where n.id= ?2")
-    void updateFkey(@Param("id") Integer id, @Param("key") Integer key);
+@Query("delete  from notes n where n.id=:id AND n.task.id=:taskID")
+    int deleteByTaskAndId(@Param("id") Integer id, @Param("taskID") Integer taskID);
 
-
-
-
-//    void deleteByField1andField2(String field1, String field2);
-  //  void deletebByidandtask_id(Integer nodeid, Integer id);
 }
 

@@ -4458,3 +4458,6 @@ Caused by: org.h2.mvstore.MVStoreException: The file is locked: H:/Applications/
 	at org.h2.mvstore.FileStore.open(FileStore.java:163)
 	at org.h2.mvstore.MVStore.<init>(MVStore.java:444)
 	... 28 more
+2023-02-15 20:23:43 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "NODES" not found; SQL statement:
+select * from NODES [42102-214]

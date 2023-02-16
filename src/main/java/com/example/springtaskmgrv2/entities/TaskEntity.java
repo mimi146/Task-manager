@@ -8,6 +8,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Entity(name = "tasks")
 @Setter
@@ -26,6 +27,13 @@ public class TaskEntity extends BaseEntity {
 
     @Column(name = "due_date", nullable = true)
     Date dueDate;
+
+//    @OneToMany(mappedBy ="task")
+//    private Set<NoteEntity> notes;
+
+
+
+
 
 //    @OneToMany(mappedBy = "task",cascade = CascadeType.ALL)
 //

@@ -19,7 +19,9 @@ public class NoteEntity extends BaseEntity {
     String body;
 
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name="task_id")
+//    @ManyToOne(cascade = CascadeType.PERSIST)
+//    @JoinColumn(name="task_id")
+    @ManyToOne
+        @JoinColumn(name="tasks_id")
     TaskEntity task;
 }

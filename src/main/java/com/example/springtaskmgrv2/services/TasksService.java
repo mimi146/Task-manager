@@ -1,5 +1,7 @@
 package com.example.springtaskmgrv2.services;
 
+import com.example.springtaskmgrv2.dto.NoteRequestDto;
+import com.example.springtaskmgrv2.dto.NotesDto;
 import com.example.springtaskmgrv2.entities.NoteEntity;
 import com.example.springtaskmgrv2.entities.TaskEntity;
 import com.example.springtaskmgrv2.repositories.NotesRepository;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class TasksService {
@@ -35,6 +38,7 @@ public class TasksService {
     public Optional<TaskEntity> getTaskbyId(Integer id) {
         return tasksRepository.findById(id);
     }
+
 
     public ResponseEntity<TaskEntity> patchTask(Integer id, TaskEntity taskEntity) {
         try {
@@ -76,23 +80,27 @@ public class TasksService {
         //return tasksRepository.findall
     }
 
-    public List<NoteEntity> getNotesId(Integer id) {
-        return notesRepository.findbyTid(id);
+//    public List<NoteEntity> getNotesId(Integer id) {
+//        return notesRepository.findbyTid(id);
+//    }
 
-
+    public List<NotesDto> getNotesId(Integer id) {
+        return notesRepository.findAllByTaskId(id).stream().map(entity->
+           new NotesDto(entity.getBody(),entity.getId())
+        ).collect(Collectors.toList());
     }
 
-    public Optional<NoteEntity> addNotes(NoteEntity noteEntity, Integer id) {
-        Boolean check = tasksRepository.existsById(id);
-
-        if(!check) throw new RuntimeException("id dont exist");
+    public Optional<NoteEntity> addNotes(NoteRequestDto noteRequestDto, Integer id) {
+       Optional<TaskEntity> taskEntity = tasksRepository.findById(id);
+        if(!taskEntity.isPresent()) throw new RuntimeException("id dont exist");
+        NoteEntity noteEntity = new NoteEntity();
+        noteEntity.setBody(noteRequestDto.getBody());
+        noteEntity.setTask(taskEntity.get());
          notesRepository.save(noteEntity);
-         int key = noteEntity.getId();
-        notesRepository.updateFkey(id, key);
-        return notesRepository.findById(key);
+        return Optional.of(noteEntity);
     }
 
     public void deleteNode(Integer id, Integer nodeid) {
-        notesRepository.deleteById(nodeid);
+        notesRepository.deleteByTaskAndId(nodeid,id);
     }
 }
